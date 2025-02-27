@@ -1,1 +1,8 @@
-logs/
+# ----------------- #
+# - Ignored files - #
+# ----------------- #
+
+#  for PHP logs, should not be tracked 
+        logs/ 
+# contains project-related data  
+         dev/   

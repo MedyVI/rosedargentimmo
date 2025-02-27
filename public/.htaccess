@@ -1,0 +1,15 @@
+<!-- Active le moteur de réécriture d’URL -->
+RewriteEngine On
+
+<!-- Si le fichier demandé n’existe pas... -->
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+<!-- ..alors on redirige la requête vers index.php -->
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+<!-- Protection des fichiers sensibles (interdit l’accès aux fichiers SQL, ENV et PHP de config) -->
+<FilesMatch "\.(env|sql|config\.php|database\.php)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
