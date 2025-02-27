@@ -3,6 +3,6 @@
 # ----------------- #
 
 #  for PHP logs, should not be tracked 
-        logs/ 
+logs/ 
 # contains project-related data  
-         dev/   
+dev/   
