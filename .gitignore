@@ -1,0 +1,7 @@
+# ----------------- #
+# - Ignored files - #
+# ----------------- #
+
+#  for PHP logs, should not be tracked 
+logs/ 
+

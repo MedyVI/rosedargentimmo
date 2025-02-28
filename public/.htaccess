@@ -1,0 +1,27 @@
+<!-- Active le moteur de réécriture d’URL -->
+RewriteEngine On
+
+<!-- Si le fichier demandé n’existe pas, rediriger vers index.php -->
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+<!-- Protection des fichiers sensibles (empêche leur accès via le navigateur) -->
+<FilesMatch "\.(env|sql|config\.php|database\.php|ini|log|sh)$">
+    Require all denied
+</FilesMatch>
+
+<!-- Désactive l'affichage des fichiers du dossier (empêche la navigation brute) -->
+Options -Indexes
+
+<!-- Sécurise les fichiers PHP (empêche l’exécution dans certains dossiers comme /assets/) -->
+<DirectoryMatch "/(assets|logs)/">
+    <Files "*.php">
+        Require all denied
+    </Files>
+</DirectoryMatch>
+
+<!-- Protection contre certains types d’attaques courantes -->
+Header always set X-Frame-Options "SAMEORIGIN"
+Header always set X-XSS-Protection "1; mode=block"
+Header always set X-Content-Type-Options "nosniff"
