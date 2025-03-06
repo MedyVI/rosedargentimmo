@@ -5,3 +5,5 @@
 #  for PHP logs, should not be tracked 
 logs/ 
 
+# no need to track thi
+src/config/.env
