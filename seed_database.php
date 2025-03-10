@@ -7,130 +7,43 @@ require_once __DIR__ . '/src/config/database.php';
 
 /**
  * Récupérer les types autorisés depuis la base de données (colonne ENUM 'type').
- *
- * @param PDO $pdo
- * @return array
  */
 function getAllowedTypes($pdo) {
     $query = "SHOW COLUMNS FROM annonces LIKE 'type'";
     $stmt = $pdo->query($query);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    // Extraction des valeurs ENUM
+    
     if ($result) {
-        preg_match("/^enum\((.*)\)$/", $result['Type'], $matches);
+        preg_match("/^enum\\((.*)\\)$/", $result['Type'], $matches);
         if (isset($matches[1])) {
-            // Convertit la liste de valeurs en un tableau
-            $types = str_getcsv($matches[1], ",", "'");
-            return $types;
+            return str_getcsv($matches[1], ",", "'");
         }
     }
     return [];
 }
 
-/**
- * Générer une référence unique aléatoire (REF + nombre).
- *
- * @param PDO $pdo
- * @return string
- */
 function generateUniqueReference($pdo) {
     do {
-        // Génère une référence entre REF1000 et REF99999
         $reference = "REF" . rand(1000, 99999);
-
         $stmt = $pdo->prepare("SELECT COUNT(*) FROM annonces WHERE reference = ?");
         $stmt->execute([$reference]);
         $exists = $stmt->fetchColumn();
     } while ($exists > 0);
-
     return $reference;
 }
 
-/**
- * Générer un prix aléatoire entre 100 000 et 1 000 000 €.
- *
- * @return int
- */
-function randomPrice() {
-    return rand(100000, 1000000);
-}
-
-/**
- * Générer une surface aléatoire entre 20 et 300 m².
- *
- * @return int
- */
-function randomSurface() {
-    return rand(20, 300);
-}
-
-/**
- * Générer des coordonnées GPS aléatoires (dans un cadre approximatif de la France).
- *
- * @return string Format "latitude,longitude"
- */
+function randomPrice() { return rand(100000, 1000000); }
+function randomSurface() { return rand(20, 300); }
+function randFloat($min, $max) { return $min + mt_rand() / mt_getrandmax() * ($max - $min); }
 function randomGPS() {
-    // Définir une bounding box pour la France métropolitaine (approximative)
-    $minLat = 42.28;  // Sud
-    $maxLat = 51.09;  // Nord
-    $minLon = -5.45;  // Ouest
-    $maxLon = 9.86;   // Est
-
-    // Génération de valeurs aléatoires flottantes
-    $lat = randFloat($minLat, $maxLat);
-    $lon = randFloat($minLon, $maxLon);
-
-    // Retourne la coordonnée sous forme "lat,lon"
-    return sprintf("%.5f,%.5f", $lat, $lon);
+    return sprintf("%.5f,%.5f", randFloat(42.28, 51.09), randFloat(-5.45, 9.86));
 }
-
-/**
- * Génère un float aléatoire entre $min et $max.
- *
- * @param float $min
- * @param float $max
- * @return float
- */
-function randFloat($min, $max) {
-    return $min + mt_rand() / mt_getrandmax() * ($max - $min);
-}
-
-/**
- * Générer une ville aléatoire.
- *
- * @return string
- */
 function randomCity() {
     $villes = ["Épinal", "Nancy", "Metz", "Strasbourg", "Dijon", "Lyon", "Paris", "Marseille", "Bordeaux"];
     return $villes[array_rand($villes)];
 }
-
-/**
- * Générer un code postal aléatoire.
- *
- * @return string
- */
-function randomPostalCode() {
-    // Code postal français : 5 chiffres (hors DOM-TOM complexité)
-    return str_pad((string)rand(1000, 99999), 5, "0", STR_PAD_LEFT);
-}
-
-/**
- * Choisir un type de bien aléatoire depuis la liste autorisée (ENUM).
- *
- * @param array $allowedTypes
- * @return string
- */
-function randomType($allowedTypes) {
-    return $allowedTypes[array_rand($allowedTypes)];
-}
-
-/**
- * Générer une description aléatoire.
- *
- * @return string
- */
+function randomPostalCode() { return str_pad(rand(1000, 99999), 5, "0", STR_PAD_LEFT); }
+function randomType($allowedTypes) { return $allowedTypes[array_rand($allowedTypes)]; }
 function randomDescription() {
     $descriptions = [
         "Maison spacieuse avec jardin et garage.",
@@ -145,74 +58,56 @@ function randomDescription() {
     return $descriptions[array_rand($descriptions)];
 }
 
+function getRandomImage() {
+    $imageDir = __DIR__ . "/public/assets/images/maisons_test/";
+    $images = glob($imageDir . "*.{jpg,jpeg,png,gif}", GLOB_BRACE);
+    return $images ? basename($images[array_rand($images)]) : null;
+}
+
 try {
-    // 1. Récupérer les types valides depuis MySQL (colonne ENUM 'type')
     $allowedTypes = getAllowedTypes($pdo);
+    if (empty($allowedTypes)) die("Erreur : Impossible de récupérer les valeurs autorisées pour 'type'.");
 
-    if (empty($allowedTypes)) {
-        die("Erreur : Impossible de récupérer les valeurs autorisées pour 'type'.");
-    }
-
-    // 2. Insérer 50 annonces factices
     for ($i = 1; $i <= 50; $i++) {
-        $titre            = "Annonce #" . $i;
-        $reference        = generateUniqueReference($pdo);
-        $prix             = randomPrice();
-        $description      = randomDescription();
-        $type             = randomType($allowedTypes);
-        $surface          = randomSurface();
-        $ville            = randomCity();
-        $code_postal      = randomPostalCode();
-        $localisation     = randomGPS(); // Coordonnées GPS
-        $statut           = (rand(0, 1) === 1) ? "disponible" : "vendu";
+        $titre = "Annonce #" . $i;
+        $reference = generateUniqueReference($pdo);
+        $prix = randomPrice();
+        $description = randomDescription();
+        $type = randomType($allowedTypes);
+        $surface = randomSurface();
+        $ville = randomCity();
+        $code_postal = randomPostalCode();
+        $localisation = randomGPS();
+        $statut = (rand(0, 1) === 1) ? "disponible" : "vendu";
         $date_publication = date("Y-m-d H:i:s", strtotime("-" . rand(1, 365) . " days"));
 
-        // Préparation de la requête d'insertion
-        $query = "
-            INSERT INTO annonces (
-                titre,
-                reference,
-                description,
-                prix,
-                type,
-                surface,
-                localisation,   -- maintenant des coordonnées GPS
-                code_postal,
-                ville,
-                statut,
-                date_publication
-            ) VALUES (
-                :titre,
-                :reference,
-                :description,
-                :prix,
-                :type,
-                :surface,
-                :localisation,
-                :code_postal,
-                :ville,
-                :statut,
-                :date_publication
-            )
-        ";
-
+        $query = "INSERT INTO annonces (titre, reference, description, prix, type, surface, localisation, code_postal, ville, statut, date_publication) 
+                  VALUES (:titre, :reference, :description, :prix, :type, :surface, :localisation, :code_postal, :ville, :statut, :date_publication)";
         $stmt = $pdo->prepare($query);
         $stmt->execute([
-            'titre'            => $titre,
-            'reference'        => $reference,
-            'description'      => $description,
-            'prix'             => $prix,
-            'type'             => $type,
-            'surface'          => $surface,
-            'localisation'     => $localisation,
-            'code_postal'      => $code_postal,
-            'ville'            => $ville,
-            'statut'           => $statut,
+            'titre' => $titre,
+            'reference' => $reference,
+            'description' => $description,
+            'prix' => $prix,
+            'type' => $type,
+            'surface' => $surface,
+            'localisation' => $localisation,
+            'code_postal' => $code_postal,
+            'ville' => $ville,
+            'statut' => $statut,
             'date_publication' => $date_publication
         ]);
+        
+        $annonce_id = $pdo->lastInsertId();
+        $image = getRandomImage();
+        if ($image) {
+            $imageQuery = "INSERT INTO images (annonce_id, url) VALUES (:annonce_id, :url)";
+            $imageStmt = $pdo->prepare($imageQuery);
+            $imageStmt->execute(['annonce_id' => $annonce_id, 'url' => "public/assets/images/maisons_test/" . $image]);
+        }
     }
 
-    echo "50 annonces factices insérées avec succès !";
+    echo "50 annonces factices avec images insérées avec succès !";
 } catch (PDOException $e) {
     die("Erreur lors de l'insertion : " . $e->getMessage());
 }
