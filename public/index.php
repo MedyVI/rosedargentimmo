@@ -2,21 +2,44 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+var_dump(getenv('DB_USERNAME'), getenv('DB_PASSWORD'));
 
-// echo "Chargement de index.php<br>";
-// die();
-
+// Inclusion de la configuration globale
 require_once __DIR__ . '/../src/config/config.php';
 
+// Détermination de la page demandée
 $page = $_GET['page'] ?? 'home';
 
-switch ($page) {
-    case 'annonces':
-        require __DIR__ . '/../src/views/annonces.php';
-        break;
-    default:
-        echo "<h1>Bienvenue sur Rose d'Argent Immobilier</h1>";
-        echo '<a href="?page=annonces" style="display: inline-block; padding: 10px; background: #007bff; color: white; text-decoration: none; border-radius: 5px;">Voir les annonces</a>';
-        break;
-}
+// Inclusion du header
+require_once __DIR__ . '/../src/views/includes/header.php';
+?>
+
+<div class="main-container">
+    <main class="container">
+        <?php
+        // Gestion du routage des pages
+        switch ($page) {
+            case 'accueil':
+                require __DIR__ . '/../src/views/accueil.php';
+                break;
+
+            case 'annonces':
+                require __DIR__ . '/../src/views/annonces.php';
+                break;
+
+            case 'contact':
+                require __DIR__ . '/../src/views/contact.php';
+                break;
+
+            default:
+                echo "<h1>Page introuvable</h1>";
+                break;
+        }
+        ?>
+    </main>
+</div>
+
+<?php
+// Inclusion du footer
+require_once __DIR__ . '/../src/views/includes/footer.php';
 ?>

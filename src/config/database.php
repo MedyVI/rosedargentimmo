@@ -14,6 +14,7 @@ if (!file_exists($envFile)) {
 
 // Charger le fichier .env
 $config = parse_ini_file($envFile, true);
+var_dump($config);
 
 // Vérifier si les variables sont bien chargées
 if (!$config) {
@@ -46,8 +47,6 @@ try {
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         PDO::ATTR_EMULATE_PREPARES => false,
     ]);
-    
-    echo "Connexion à la base de données réussie !";
 } catch (PDOException $e) {
     die("Erreur de connexion à la base de données : " . $e->getMessage());
 }
