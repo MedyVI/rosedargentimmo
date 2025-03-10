@@ -150,7 +150,7 @@ try {
     $allowedTypes = getAllowedTypes($pdo);
 
     if (empty($allowedTypes)) {
-        die("❌ Erreur : Impossible de récupérer les valeurs autorisées pour 'type'.");
+        die("Erreur : Impossible de récupérer les valeurs autorisées pour 'type'.");
     }
 
     // 2. Insérer 50 annonces factices
@@ -212,7 +212,7 @@ try {
         ]);
     }
 
-    echo "✅ 50 annonces factices insérées avec succès !";
+    echo "50 annonces factices insérées avec succès !";
 } catch (PDOException $e) {
-    die("❌ Erreur lors de l'insertion : " . $e->getMessage());
+    die("Erreur lors de l'insertion : " . $e->getMessage());
 }

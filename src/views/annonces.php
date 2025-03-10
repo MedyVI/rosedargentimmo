@@ -1,13 +1,17 @@
 <?php
-require_once '../src/config/database.php';
+
+// echo "Exécution de annonces.php<br>";
+// die();
+
+require_once __DIR__ . '/../model/AnnoncesModel.php';
 
 try {
-    // Récupération des annonces en mode associatif
-    $query = $pdo->query("SELECT * FROM annonces ORDER BY date_publication DESC");
-    $annonces = $query->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    die("Erreur lors de la récupération des annonces : " . $e->getMessage());
+    $annoncesModel = new AnnoncesModel($pdo);
+    $annonces = $annoncesModel->getAnnonces();
+} catch (Exception $e) {
+    die($e->getMessage());
 }
+$annonces = $annoncesModel->getAnnonces();
 ?>
 
 <hr>
