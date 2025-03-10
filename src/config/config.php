@@ -1,2 +1,2 @@
 
-<?php echo "Test from config.php"; ?>
+<?php echo "Test from config.php<br>"; ?>
