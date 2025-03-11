@@ -2,7 +2,6 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-var_dump(getenv('DB_USERNAME'), getenv('DB_PASSWORD'));
 
 // Inclusion de la configuration globale
 require_once __DIR__ . '/../src/config/config.php';
