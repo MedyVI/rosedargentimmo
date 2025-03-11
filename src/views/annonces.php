@@ -3,7 +3,21 @@ require_once __DIR__ . '/../model/AnnoncesModel.php';
 
 try {
     $annoncesModel = new AnnoncesModel($pdo);
-    $annonces = $annoncesModel->getAnnoncesWithImages();
+
+    // Déterminer la page actuelle (1 par défaut)
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $page = max(1, $page);
+    $annoncesParPage = 10;
+    // var_dump($page, $annoncesParPage);
+    // die();
+    
+    // Récupérer les annonces paginées
+    $annonces = $annoncesModel->getAnnoncesPaginees($page, $annoncesParPage);
+
+    // Récupérer le nombre total d'annonces pour la pagination
+    $totalAnnonces = $annoncesModel->countAnnonces();
+    $totalPages = ceil($totalAnnonces / $annoncesParPage);
+
 } catch (Exception $e) {
     die($e->getMessage());
 }
@@ -19,7 +33,7 @@ try {
 </head>
 <body>
     <main class="container">
-        <h1 class=h1annonces>Nos annonces </h1>
+        <h1 class="h1annonces">Nos annonces</h1>
         
         <div class="annonces-container">
             <?php if ($annonces && count($annonces) > 0): ?>
@@ -39,6 +53,17 @@ try {
                 <?php endforeach; ?>
             <?php else: ?>
                 <p>Aucune annonce trouvée.</p>
+            <?php endif; ?>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <?php if ($page > 1): ?>
+                <a href="?page=<?= $page - 1 ?>" class="btn-pagination">Précédent</a>
+            <?php endif; ?>
+            <span>Page <?= $page ?> / <?= $totalPages ?></span>
+            <?php if ($page < $totalPages): ?>
+                <a href="?page=<?= $page + 1 ?>" class="btn-pagination">Suivant</a>
             <?php endif; ?>
         </div>
     </main>
