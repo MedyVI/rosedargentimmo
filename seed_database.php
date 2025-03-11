@@ -103,7 +103,7 @@ try {
         if ($image) {
             $imageQuery = "INSERT INTO images (annonce_id, url) VALUES (:annonce_id, :url)";
             $imageStmt = $pdo->prepare($imageQuery);
-            $imageStmt->execute(['annonce_id' => $annonce_id, 'url' => "public/assets/images/maisons_test/" . $image]);
+            $imageStmt->execute(['annonce_id' => $annonce_id, 'url' => "assets/images/maisons_test/" . $image]);
         }
     }
 

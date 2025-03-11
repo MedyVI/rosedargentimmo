@@ -1,4 +1,5 @@
 # --- Activer la réécriture d’URL (Front Controller) ---
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
     
@@ -6,17 +7,18 @@
     # alors rediriger vers index.php
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} !\.(?:jpg|jpeg|png|gif|css|js|woff|woff2|ttf|otf|svg)$ [NC]
     RewriteRule ^ index.php [QSA,L]
 </IfModule>
 
-
 # --- Bloquer l'accès à certains fichiers sensibles (optionnel si déjà fait dans la conf) ---
+
 <FilesMatch "\.(env|sql|ini|log|sh|bak|htaccess|htpasswd)$">
-    Require all denied
+Require all denied
 </FilesMatch>
 
-
 # --- Sécuriser contre certaines attaques courantes (optionnel) ---
+
 <IfModule mod_headers.c>
     Header always set X-Frame-Options "SAMEORIGIN"
     Header always set X-XSS-Protection "1; mode=block"

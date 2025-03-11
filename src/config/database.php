@@ -14,7 +14,6 @@ if (!file_exists($envFile)) {
 
 // Charger le fichier .env
 $config = parse_ini_file($envFile, true);
-var_dump($config);
 
 // Vérifier si les variables sont bien chargées
 if (!$config) {
