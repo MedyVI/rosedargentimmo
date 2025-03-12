@@ -1,27 +1,17 @@
 <?php
-require_once __DIR__ . '/../model/AnnoncesModel.php';
+require_once __DIR__ . '/../controllers/AnnoncesController.php';
 
-try {
-    $annoncesModel = new AnnoncesModel($pdo);
+$controller = new AnnoncesController($pdo);
 
-    // Déterminer la page actuelle (1 par défaut)
-    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-    $page = max(1, $page);
-    $annoncesParPage = 8;
-    // var_dump($page, $annoncesParPage);
-    // die();
-    
-    // Récupérer les annonces paginées
-    $annonces = $annoncesModel->getAnnoncesPaginees($page, $annoncesParPage);
+// Récupérer le numéro de la page
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$resultats = $controller->afficherAnnonces($page);
 
-    // Récupérer le nombre total d'annonces pour la pagination
-    $totalAnnonces = $annoncesModel->countAnnonces();
-    $totalPages = ceil($totalAnnonces / $annoncesParPage);
-
-} catch (Exception $e) {
-    die($e->getMessage());
-}
+$annonces = $resultats['annonces'];
+$totalPages = $resultats['totalPages'];
+$page = $resultats['page'];
 ?>
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -29,7 +19,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liste des annonces</title>
-    <link rel="stylesheet" href="<?= CSS_PATH ?>styles.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>main.css">
 </head>
 <body>
     <main class="container">

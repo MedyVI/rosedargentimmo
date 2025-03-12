@@ -2,8 +2,27 @@
 # - Ignored files - #
 # ----------------- #
 
-#  for PHP logs, should not be tracked 
-logs/ 
+# Logs et erreurs PHP
+logs/
+*.log
 
-# no need to track thi
+# Fichiers de configuration sensibles
 src/config/.env
+src/config/database.php
+
+# Dépendances (au cas où)
+node_modules/
+vendor/
+
+# Cache et fichiers temporaires
+*.cache
+*.tmp
+*.swp
+
+# Système (Windows / macOS)
+.DS_Store
+Thumbs.db
+
+# Base de données et fichiers SQL
+*.sql
+*.sqlite

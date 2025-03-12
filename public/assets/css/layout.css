@@ -1,0 +1,103 @@
+/* ==============================
+   LAYOUT CSS
+   ============================== */
+
+/* Structure principale */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: "Montserrat", sans-serif;
+  color: var(--noir);
+  background-color: #d3d3d3 !important; /* Gris clair */
+}
+
+html {
+  overflow-y: scroll;
+}
+
+main {
+  flex: 1;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Caslon Pro", serif;
+  color: lightgrey;
+  margin-top: 0;
+}
+
+.h1annonces {
+  text-align: center;
+  padding-top: 30px;
+  font-family: "Montserrat", serif;
+  text-shadow: 4px 5px 10px rgba(0, 0, 0, 0.4);
+  color: var(--noir);
+}
+
+/* Pour plus de lisibilité sur mobile */
+p {
+  line-height: 1.6;
+}
+
+/* ==============================
+     HEADER
+     ============================== */
+header {
+  background: linear-gradient(
+    to right,
+    rgba(29, 29, 27, 0.9),
+    rgba(42, 42, 40, 0.8)
+  );
+  color: var(--blanc);
+  padding: 15px 0;
+}
+
+header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 20px;
+}
+
+/* Logo & Bandeau */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.logo {
+  height: 45px;
+  width: auto;
+  transition: transform 0.5s;
+}
+.logo:hover {
+  transform: scale(1.15);
+}
+.bandeau {
+  height: 65px;
+  width: auto;
+}
+
+/* ==============================
+     FOOTER
+     ============================== */
+footer {
+  background: var(--noir);
+  color: var(--argent);
+  text-align: center;
+  padding: 20px 0;
+  font-size: 0.9em;
+  margin-top: auto;
+}
+footer .container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 20px;
+}

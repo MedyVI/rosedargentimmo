@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../config/database.php'; // Inclusion de la connexion à la base de données
-
 class AnnoncesModel
 {
     private $pdo;
@@ -9,13 +7,9 @@ class AnnoncesModel
     /**
      * Constructeur de la classe AnnoncesModel.
      * @param PDO $pdo Instance PDO pour la connexion à la base de données.
-     * @throws Exception Si la connexion à la base de données est absente.
      */
-    public function __construct($pdo)
+    public function __construct(PDO $pdo)
     {
-        if (!$pdo) {
-            throw new Exception("Erreur : La connexion à la base de données est absente !");
-        }
         $this->pdo = $pdo;
     }
 
@@ -24,14 +18,12 @@ class AnnoncesModel
      * @param int $page Numéro de la page actuelle.
      * @param int $annoncesParPage Nombre d'annonces par page.
      * @return array Liste des annonces paginées avec leurs images.
-     * @throws Exception En cas d'erreur SQL.
      */
-    public function getAnnoncesPaginees($page, $annoncesParPage = 10)
+    public function getAnnoncesPaginees(int $page, int $annoncesParPage = 10): array
     {
         try {
-            // S'assurer que les valeurs sont positives et bien des entiers
-            $page = max(1, (int) $page);
-            $annoncesParPage = max(1, (int) $annoncesParPage);
+            $page = max(1, $page);
+            $annoncesParPage = max(1, $annoncesParPage);
             $offset = ($page - 1) * $annoncesParPage;
     
             $stmt = $this->pdo->prepare("
@@ -46,34 +38,26 @@ class AnnoncesModel
             ");
             $stmt->bindValue(':limit', $annoncesParPage, PDO::PARAM_INT);
             $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-            
-            // Vérification des valeurs avant exécution
-            // var_dump("Page: $page", "OFFSET: $offset", "LIMIT: $annoncesParPage");
-            // die();
-            
             $stmt->execute();
     
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            throw new Exception("Erreur lors de la récupération des annonces paginées : " . $e->getMessage());
+            throw new PDOException("Erreur lors de la récupération des annonces paginées : " . $e->getMessage());
         }
     }
-    
-
 
     /**
      * Récupère le nombre total d'annonces.
      * @return int Nombre total d'annonces dans la base de données.
-     * @throws Exception En cas d'erreur SQL.
      */
-    public function countAnnonces()
+    public function countAnnonces(): int
     {
         try {
             $stmt = $this->pdo->query("SELECT COUNT(*) AS total FROM annonces");
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return (int) $result['total'];
         } catch (PDOException $e) {
-            throw new Exception("Erreur lors du comptage des annonces : " . $e->getMessage());
+            throw new PDOException("Erreur lors du comptage des annonces : " . $e->getMessage());
         }
     }
 
@@ -81,24 +65,31 @@ class AnnoncesModel
      * Récupère une annonce spécifique par son ID.
      * @param int $id Identifiant de l'annonce.
      * @return array|null Données de l'annonce ou null si non trouvée.
-     * @throws Exception En cas d'erreur SQL.
      */
-    public function getAnnonceById($id)
+    public function getAnnonceById(int $id): ?array
     {
         try {
+            if ($id <= 0) {
+                throw new InvalidArgumentException("ID invalide.");
+            }
+
             $stmt = $this->pdo->prepare("
                 SELECT 
                     a.*, 
-                    GROUP_CONCAT(i.url SEPARATOR ',') AS images
+                    (SELECT GROUP_CONCAT(i.url) FROM images i WHERE i.annonce_id = a.id) AS images
                 FROM annonces a
-                LEFT JOIN images i ON a.id = i.annonce_id
                 WHERE a.id = :id
-                GROUP BY a.id
             ");
             $stmt->execute(['id' => $id]);
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+            $annonce = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($annonce && isset($annonce['images'])) {
+                $annonce['images'] = explode(',', $annonce['images']); // Convertir en tableau
+            }
+
+            return $annonce ?: null;
         } catch (PDOException $e) {
-            throw new Exception("Erreur lors de la récupération de l'annonce : " . $e->getMessage());
+            throw new PDOException("Erreur lors de la récupération de l'annonce : " . $e->getMessage());
         }
     }
 }

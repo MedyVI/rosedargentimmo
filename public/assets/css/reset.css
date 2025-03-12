@@ -1,0 +1,40 @@
+/* ==============================
+   RESET CSS
+   ============================== */
+
+/* Suppression des marges et paddings par défaut */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Normalisation des polices */
+  html {
+    font-size: 16px;
+  }
+  
+  /* Uniformisation des listes */
+  ul, ol {
+    list-style: none;
+  }
+  
+  /* Suppression du soulignement des liens */
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  /* Images fluides */
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  /* Uniformisation des boutons */
+  button {
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+  }

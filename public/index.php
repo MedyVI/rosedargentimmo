@@ -31,7 +31,14 @@ require_once __DIR__ . '/../src/views/includes/header.php';
                 break;
 
             default:
-                echo "<h1>Page introuvable</h1>";
+                echo "
+            <div class='error-container'>
+                <div class='error-box'>
+                    <h1>Oups ! Cette page est introuvable</h1>
+                    <p class='error-message'>Il semble que la page que vous recherchez n'existe pas ou a été déplacée.</p>
+                    <a href='" . BASE_URL . "index.php?page=accueil' class='error-btn'>Revenir à l'accueil</a>
+                </div>
+            </div>";
                 break;
         }
         ?>

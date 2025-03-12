@@ -1,0 +1,109 @@
+/* ==============================
+   MAIN CSS - IMPORTS & BASE
+   ============================== */
+
+/* Importation des fichiers CSS séparés */
+@import url("reset.css");
+@import url("layout.css");
+@import url("components.css");
+@import url("responsive.css");
+
+/* ==============================
+   VARIABLES & PALETTE
+   ============================== */
+:root {
+  --blanc: #ffffff;
+  --argent: #f2f2f2;
+  --gris: #7a7a7a;
+  --noir: #1d1d1b;
+  --accent: #c0392b;
+  --max-width: 1200px;
+  --padding-section: 40px;
+}
+
+/* ==============================
+   POLICES
+   ============================== */
+@font-face {
+  font-family: "Montserrat";
+  src: url("../fonts/Montserrat-VariableFont_wght.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Caslon Pro";
+  src: url("../fonts/ACaslonPro-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* ==============================
+   Page introuvable (error 404)
+   ============================== */
+   /* Conteneur principal centré */
+.error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh;
+    margin-top: 50px;
+}
+
+/* Boîte d'erreur stylisée */
+.error-box {
+    text-align: center;
+    padding: 25px;
+    border-radius: 12px;
+    background-color: #ffecec;
+    box-shadow: 2px 4px 15px rgba(0, 0, 0, 0.15);
+    font-family: Arial, sans-serif;
+    max-width: 450px;
+    transition: transform 0.3s ease-in-out, background-color 0.3s;
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+/* Animation d’apparition */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Style du titre */
+.error-box h1 {
+    color: #ff4c4c;
+    font-size: 26px;
+    margin-bottom: 10px;
+}
+
+/* Style du message */
+.error-message {
+    color: #555;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+/* Bouton de retour */
+.error-btn {
+    display: inline-block;
+    background: #ff4c4c;
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out, transform 0.2s;
+}
+
+/* Effet au survol */
+.error-btn:hover {
+    background: #d73838;
+    transform: scale(1.05);
+}

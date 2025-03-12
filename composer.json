@@ -1,0 +1,20 @@
+{
+    "name": "medy/rosedargentimmo",
+    "description": "Projet web pour l'agence immobilière Rose d'Argent",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Medy\\Rosedargentimmo\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "MedyVI"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
