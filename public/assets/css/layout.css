@@ -33,7 +33,7 @@ h3 {
 
 .h1annonces {
   text-align: center;
-  padding-top: 30px;
+  margin: 40px 0px;
   font-family: "Montserrat", serif;
   text-shadow: 4px 5px 10px rgba(0, 0, 0, 0.4);
   color: var(--noir);
@@ -73,7 +73,7 @@ header .container {
   gap: 15px;
 }
 .logo {
-  height: 45px;
+  height: 40px;
   width: auto;
   transition: transform 0.5s;
 }
@@ -81,7 +81,7 @@ header .container {
   transform: scale(1.15);
 }
 .bandeau {
-  height: 65px;
+  height: 55px;
   width: auto;
 }
 

@@ -7,6 +7,7 @@
     
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/error.js"></script>
+    <script src="/assets/js/annonces.js"></script>
 
 </footer>
 </body>

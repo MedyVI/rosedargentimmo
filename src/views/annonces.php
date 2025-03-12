@@ -26,6 +26,53 @@ $page = min($page, $totalPages);
     <main class="container">
         <h1 class="h1annonces">Nos annonces</h1>
 
+        <!-- Formulaire de filtrage -->
+         <!-- Bouton pour ouvrir la modale -->
+    <button class="open-modal-btn" onclick="openModal()">Filtrer les annonces</button>
+
+<!-- Modale -->
+<div id="filterModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+
+        <form method="GET" action="index.php" class="filter-form">
+            <input type="hidden" name="page" value="annonces">
+
+            <label for="ville">Ville :</label>
+            <input type="text" name="ville" id="ville" value="<?= isset($_GET['ville']) ? htmlspecialchars($_GET['ville']) : '' ?>">
+
+            <label for="type">Type :</label>
+            <select name="type" id="type">
+                <option value="">Tous</option>
+                <option value="Maison" <?= (isset($_GET['type']) && $_GET['type'] === 'Maison') ? 'selected' : '' ?>>Maison</option>
+                <option value="Appartement" <?= (isset($_GET['type']) && $_GET['type'] === 'Appartement') ? 'selected' : '' ?>>Appartement</option>
+            </select>
+
+            <label for="prix_min">Prix Min :</label>
+            <input type="number" name="prix_min" id="prix_min" min="0" value="<?= isset($_GET['prix_min']) ? (int)$_GET['prix_min'] : '' ?>">
+
+            <label for="prix_max">Prix Max :</label>
+            <input type="number" name="prix_max" id="prix_max" min="0" value="<?= isset($_GET['prix_max']) ? (int)$_GET['prix_max'] : '' ?>">
+
+            <label for="statut">Statut :</label>
+            <select name="statut" id="statut">
+                <option value="">Tous</option>
+                <option value="Disponible" <?= (isset($_GET['statut']) && $_GET['statut'] === 'Disponible') ? 'selected' : '' ?>>Disponible</option>
+                <option value="Vendu" <?= (isset($_GET['statut']) && $_GET['statut'] === 'Vendu') ? 'selected' : '' ?>>Vendu</option>
+            </select>
+
+            <label for="annoncesParPage">Annonces par page :</label>
+            <select name="annoncesParPage" id="annoncesParPage">
+                <option value="5" <?= (isset($_GET['annoncesParPage']) && $_GET['annoncesParPage'] == 5) ? 'selected' : '' ?>>5</option>
+                <option value="10" <?= (isset($_GET['annoncesParPage']) && $_GET['annoncesParPage'] == 10) ? 'selected' : '' ?>>10</option>
+                <option value="20" <?= (isset($_GET['annoncesParPage']) && $_GET['annoncesParPage'] == 20) ? 'selected' : '' ?>>20</option>
+            </select>
+
+            <button type="submit">Appliquer les filtres</button>
+        </form>
+    </div>
+</div>
+
         <div class="annonces-container">
             <?php if (!empty($annonces)): ?>
                 <?php foreach ($annonces as $annonce): ?>
