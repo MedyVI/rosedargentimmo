@@ -24,7 +24,7 @@ class AnnoncesController
         try {
             $annonces = $this->annoncesModel->getAnnoncesPaginees($page, $annoncesParPage);
             $totalAnnonces = $this->annoncesModel->countAnnonces();
-            $totalPages = ceil($totalAnnonces / $annoncesParPage);
+            $totalPages = max(1, ceil($totalAnnonces / $annoncesParPage));
 
             return [
                 'annonces' => $annonces,
@@ -36,3 +36,4 @@ class AnnoncesController
         }
     }
 }
+
