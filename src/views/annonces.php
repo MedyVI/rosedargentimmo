@@ -49,18 +49,23 @@ $page = min($page, $totalPages);
 
         <!-- Pagination -->
         <div class="pagination">
+            <!-- Bouton précédent -->
             <?php if ($page > 1): ?>
-                <a href="index.php?page=annonces&num=<?= max(1, $page - 1) ?>" class="btn-pagination">Précédent</a>
+                <a href="index.php?page=annonces&num=<?= max(1, $page - 1) ?>" class="btn-pagination">◀</a>
             <?php endif; ?>
 
-            <span>Page <?= $page ?> / <?= $totalPages ?></span>
+            <!-- Numéros de page -->
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <a href="index.php?page=annonces&num=<?= $i ?>" class="btn-num <?= ($i == $page) ? 'active' : '' ?>">
+                    <?= $i ?>
+                </a>
+            <?php endfor; ?>
 
+            <!-- Bouton suivant -->
             <?php if ($page < $totalPages): ?>
-                <a href="index.php?page=annonces&num=<?= min($totalPages, $page + 1) ?>" class="btn-pagination">Suivant</a>
+                <a href="index.php?page=annonces&num=<?= min($totalPages, $page + 1) ?>" class="btn-pagination">▶</a>
             <?php endif; ?>
         </div>
-
-    </main>
 </body>
 
 </html>

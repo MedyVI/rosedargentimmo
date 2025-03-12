@@ -303,4 +303,72 @@ h1 {
     background: #9d2d20; /* nuance plus foncée */
     transform: scale(1.05);
   }
+
+/* ==============================
+   BOUTONS DE PAGINATION
+   ============================== */
+   .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin: 30px 0px;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.btn-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 18px;
+    background: var(--accent);
+    color: var(--blanc);
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+    min-width: 50px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-pagination:hover {
+    background: #9d2d20;
+    transform: scale(1.08);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.pagination .btn-pagination,
+.pagination .btn-num {
+    padding: 10px 15px;
+    min-width: 50px;
+    text-align: center;
+}
+
+.pagination span {
+    font-size: 1.2em;
+    color: var(--noir);
+    padding: 0 10px;
+}
+
+/* Style pour les numéros de page */
+.btn-num {
+    background: #fff;
+    color: var(--gris);
+    border: 2px solid var(--gris);
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 10px 15px;
+    transition: background 0.3s, color 0.3s, transform 0.2s;
+}
+
+.btn-num:hover,
+.btn-num.active {
+    background: var(--accent);
+    color: var(--blanc);
+    transform: scale(1.08);
+}
+
+
   
