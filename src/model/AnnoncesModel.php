@@ -47,9 +47,9 @@ class AnnoncesModel
             $stmt->bindValue(':limit', $annoncesParPage, PDO::PARAM_INT);
             $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
             
-            // 🔥 Vérification des valeurs avant exécution
-            var_dump("Page: $page", "OFFSET: $offset", "LIMIT: $annoncesParPage");
-            die();
+            // Vérification des valeurs avant exécution
+            // var_dump("Page: $page", "OFFSET: $offset", "LIMIT: $annoncesParPage");
+            // die();
             
             $stmt->execute();
     

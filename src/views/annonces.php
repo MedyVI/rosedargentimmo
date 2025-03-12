@@ -7,7 +7,7 @@ try {
     // Déterminer la page actuelle (1 par défaut)
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
     $page = max(1, $page);
-    $annoncesParPage = 10;
+    $annoncesParPage = 8;
     // var_dump($page, $annoncesParPage);
     // die();
     
