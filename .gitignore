@@ -29,3 +29,6 @@ Thumbs.db
 
 # Dossier sensibles
 src/.env
+
+# Fichier d'importation base de données
+seed_database.php
