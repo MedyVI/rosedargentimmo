@@ -31,4 +31,4 @@ Thumbs.db
 src/.env
 
 # Fichier d'importation base de données
-seed_database.php
+seed_database.php.env
